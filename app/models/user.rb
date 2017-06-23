@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :lockable, :timeoutable
 
+  mount_uploader :avatar
+
   def self.build_account_name(email)
     account_name = []
     email.each_char { |char|
