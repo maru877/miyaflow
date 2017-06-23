@@ -9,7 +9,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    binding.pry
     params[:user][:name] = User.build_account_name(params[:user][:email])
     super
   end
