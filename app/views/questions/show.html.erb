@@ -86,8 +86,26 @@
 <% @answers.each do |answer| %>
   <p><%= answer.user.name %>さんの回答</p>
   <%= answer.body %>
-  <% if answer.user.id == current_user&.id %>
-    <%= link_to 'Edit', edit_answer_path(answer) %>
-    <%= link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+
+  <% if user_signed_in? %>
+    <br />
+
+    <% evaluation = Evaluation.find_by(user_id: current_user.id, answer_id: answer.id) %>
+    <% if evaluation.blank? %>
+      <%= link_to 'Good', good_answer_path(answer), method: :patch %>
+      <%= link_to 'bad', bad_answer_path(answer), method: :patch %>
+    <% elsif evaluation.good? %>
+      <%= link_to 'Good取り消し', cancel_answer_path(answer), method: :patch %>
+    <% elsif evaluation.bad? %>
+      <%= link_to 'bad取り消し', cancel_answer_path(answer), method: :patch %>
+    <% end %>
+
+    <% if answer.user.id == current_user&.id %>
+      <br >
+      <%= link_to 'Edit', edit_answer_path(answer) %>
+      <%= link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% end %>
+
   <% end %>
 <% end %>
