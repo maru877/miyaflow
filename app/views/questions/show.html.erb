@@ -20,5 +20,18 @@
   <%= @question.user_id %>
 </p>
 
-<%= link_to 'Edit', edit_question_path(@question) %> |
+<p>
+  <strong>Created_at:</strong>
+  <%= @question.created_at %>
+</p>
+
+<p>
+  <strong>Updated_at:</strong>
+  <%= @question.updated_at %>
+</p>
+
+
+<% if current_user&.id == @question.user.id %>
+  <%= link_to 'Edit', edit_question_path(@question) %>
+<% end %>
 <%= link_to 'Back', questions_path %>
