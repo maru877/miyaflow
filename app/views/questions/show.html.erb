@@ -35,3 +35,53 @@
   <%= link_to 'Edit', edit_question_path(@question) %>
 <% end %>
 <%= link_to 'Back', questions_path %>
+
+<% if user_signed_in? %>
+
+  <br />
+  <br />
+  <br />
+  <h1>回答する</h1>
+
+  <%= form_for(@answer) do |f| %>
+    <% if @answer.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
+
+        <ul>
+        <% @answer.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :body %>
+      <%= f.text_area :body %>
+    </div>
+
+    <div class="field">
+      <%= f.label :user_id %>
+      <%= f.hidden_field :user_id%>
+    </div>
+
+    <div class="field">
+      <%= f.label :question_id %>
+      <%= f.hidden_field :question_id%>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+<% end %>
+
+<% @answers.each do |answer| %>
+  <p><%= answer.user.name %>さんの回答</p>
+  <%= answer.body %>
+  <% if answer.user.id == current_user.id %>
+    <%= link_to 'Edit', edit_answer_path(answer) %>
+    <%= link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+<% end %>

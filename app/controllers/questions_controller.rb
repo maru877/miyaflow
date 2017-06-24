@@ -10,6 +10,10 @@ class QuestionsController < ApplicationController
   # GET /questions/1
   # GET /questions/1.json
   def show
+    if user_signed_in?
+      @answer = @question.answers.build(user_id: current_user.id)
+    end
+    @answers = @question.answers.order(updated_at: :desc)
   end
 
   # GET /questions/new
