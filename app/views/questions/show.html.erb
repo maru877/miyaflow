@@ -1,6 +1,12 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <% if @question.user.id == current_user.id %>
+    <%= link_to "#{@question.is_resolution}", resolution_question_path(@question), method: :patch%>
+  <% end %>
+</p>
+
+<p>
   <strong>Title:</strong>
   <%= @question.title %>
 </p>
