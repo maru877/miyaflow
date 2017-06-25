@@ -82,8 +82,10 @@
 
             <div class="answer-edit">
               <p><%= answer.user.name%>さんの回答</p>
-              <%= link_to '編集', edit_answer_path(answer), class: "btn btn-info" %>
-              <%= link_to '削除', answer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+              <% if current_user.id == answer.user_id %>
+                <%= link_to '編集', edit_answer_path(answer), class: "btn btn-info" %>
+                <%= link_to '削除', answer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+              <% end %>
             </div>
           <% end %>
         </div>
