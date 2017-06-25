@@ -1,6 +1,34 @@
-<h1>Editing Answer</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="form-answer-title">
+        <h1>回答</h1>
+      </div>
+      <div class="form-answer">
+        <%= form_for(@answer) do |f| %>
+          <% if @answer.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
 
-<%= render 'form', answer: @answer %>
+              <ul>
+              <% @answer.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-<%= link_to 'Show', @answer %> |
-<%= link_to 'Back', answers_path %>
+          <div class="field">
+            <%= f.text_area :body, size: "90x7", class: "form-control", placeholder: '回答内容' %><br />
+            <%= f.hidden_field :user_id%>
+            <%= f.hidden_field :question_id%>
+          </div>
+
+          <div class="actions">
+            <%= f.submit "更新", class: "btn btn-default" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,16 +12,14 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
+    <%= f.text_field :title, class: "form-control", placeholder: 'タイトル' %><br />
   </div>
 
   <div class="field">
-    <%= f.label :content %>
-    <%= f.text_area :content %>
+    <%= f.text_area :content, size: "90x7", class: "form-control", placeholder: '内容' %><br />
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "投稿", class: "btn btn-default"%>
   </div>
 <% end %>

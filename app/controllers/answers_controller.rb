@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :edit, :update, :destroy]
+  before_action :set_question, only: [:create, :update]
 
   # GET /answers
   # GET /answers.json
@@ -26,7 +27,7 @@ class AnswersController < ApplicationController
   def create
     @answer = Answer.new(answer_params)
     if @answer.save
-      redirect_to @answer, notice: 'Answer was successfully created.'
+      redirect_to @question, notice: 'この質問に回答しました。'
     else
       render :new
     end
@@ -35,14 +36,10 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    respond_to do |format|
-      if @answer.update(answer_params)
-        format.html { redirect_to @answer, notice: 'Answer was successfully updated.' }
-        format.json { render :show, status: :ok, location: @answer }
-      else
-        format.html { render :edit }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
-      end
+    if @answer.update(answer_params)
+      redirect_to @question, notice: '回答を更新しました。'
+    else
+      render :edit
     end
   end
 
@@ -50,16 +47,17 @@ class AnswersController < ApplicationController
   # DELETE /answers/1.json
   def destroy
     @answer.destroy
-    respond_to do |format|
-      format.html { redirect_to answers_url, notice: 'Answer was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to question_path(@answer.question), notice: '回答を削除しました。'
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_answer
       @answer = Answer.find(params[:id])
+    end
+
+    def set_question
+      @question = Question.find(params[:answer][:question_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

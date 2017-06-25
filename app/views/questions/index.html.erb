@@ -15,7 +15,8 @@
               <span class="label label-warning">未解決</span>
             <% end %>
             投稿者: <%= question.user.name %> さん
-            更新日: <%= l question.updated_at, format: :short %>
+            更新日: <%= l question.updated_at, format: :short %><br />
+            <br />
           </div>
         <% end %>
         <%= paginate @questions %>

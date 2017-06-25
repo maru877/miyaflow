@@ -1,3 +1,31 @@
 // Place all the styles related to the Answers controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.answer {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.answer-edit {
+  text-align: right;
+}
+
+.color-blue {
+  color: DodgerBlue;
+}
+
+.color-red {
+  color: red;
+}
+
+.form-answer-title {
+  text-align: center;
+}
+
+.form-answer {
+  text-align: center;
+  border: 1px solid #c0c0c0;
+  padding: 50px;
+}
