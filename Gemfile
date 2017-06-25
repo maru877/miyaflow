@@ -12,7 +12,11 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+
+# Bootstrap
+gem 'therubyracer' # javascript runtime。lessをコンパイルするために必要
+gem 'less-rails' # Railsでlessを使えるようにする。Bootstrapがlessで書かれているため
+gem 'twitter-bootstrap-rails' # Bootstrapの本体
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -39,6 +43,8 @@ gem 'dotenv-rails'
 
 # pagenate
 gem 'kaminari'
+
+
 
 group :development, :test do
   # Use sqlite3 as the database for Active Record
