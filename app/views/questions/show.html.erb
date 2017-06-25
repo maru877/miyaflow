@@ -1,112 +1,94 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <% if @question.user.id == current_user&.id %>
-    <%= link_to "#{@question.is_resolution}", resolution_question_path(@question), method: :patch%>
-  <% end %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @question.title %>
-</p>
-
-<p>
-  <strong>Content:</strong>
-  <%= @question.content %>
-</p>
-
-<p>
-  <strong>Is resolution:</strong>
-  <%= @question.is_resolution %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @question.user_id %>
-</p>
-
-<p>
-  <strong>Created_at:</strong>
-  <%= @question.created_at %>
-</p>
-
-<p>
-  <strong>Updated_at:</strong>
-  <%= @question.updated_at %>
-</p>
-
-
-<% if current_user&.id == @question.user.id %>
-  <%= link_to 'Edit', edit_question_path(@question) %>
-  <%= link_to 'Destroy', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' } %>
-<% end %>
-<%= link_to 'Back', questions_path %>
-
-<% if user_signed_in? %>
-
-  <br />
-  <br />
-  <br />
-  <h1>回答する</h1>
-
-  <%= form_for(@answer) do |f| %>
-    <% if @answer.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
-
-        <ul>
-        <% @answer.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
+<p class = "flash"><%= notice %><%= alert %></p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="question-title">
+        <h2>
+          <%= @question.title %>
+        </h2>
       </div>
-    <% end %>
 
-    <div class="field">
-      <%= f.label :body %>
-      <%= f.text_area :body %>
+      <p>
+        <div class="question-content">
+        <%= @question.content %>
+      </p>
+
+      <p>
+        <% if @question.is_resolution? %>
+          <span class="label label-success">解決</span>
+        <% else %>
+          <span class="label label-warning">未解決</span>
+        <% end %>
+      </p>
+
+      <p>
+        投稿者: <%= @question.user.name %>さん
+        更新日: <%= l @question.updated_at, format: :short %>
+      </p>
+
+      <div class="question-edit">
+        <% if current_user&.id == @question.user.id %>
+          <%= link_to '編集', edit_question_path(@question), class: "btn btn-info" %>
+          <%= link_to '削除', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+          <%= link_to resolution_text(@question), resolution_question_path(@question), method: :patch, class: "btn btn-default" %>
+        <% end %>
+      </div>
+
+      <% if user_signed_in? %>
+
+        <br />
+        <h2>回答</h2>
+
+        <%= form_for(@answer) do |f| %>
+          <% if @answer.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
+
+              <ul>
+              <% @answer.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= f.text_area :body, size: "90x7" %>
+            <%= f.hidden_field :user_id%>
+            <%= f.hidden_field :question_id%>
+          </div>
+
+          <div class="question-action">
+            <%= f.submit '回答する', class: "btn btn-default" %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% @answers.each do |answer| %>
+        <div class="answer">
+          <p><%= answer.body %></p>
+          <% if user_signed_in? %>
+            <% evaluation = Evaluation.find_by(user_id: current_user.id, answer_id: answer.id) %>
+            <% if evaluation.blank? %>
+              <%= link_to '', good_answer_path(answer), method: :patch, class: 'glyphicon glyphicon-thumbs-up color-blue' %>
+              <%= link_to '', bad_answer_path(answer), method: :patch, class: 'glyphicon glyphicon-thumbs-down color-red' %>
+            <% elsif evaluation.good? %>
+              <i class='glyphicon glyphicon-thumbs-up color-blue'></i>
+              <%= link_to 'Good取り消し', cancel_answer_path(answer), method: :patch, class: "btn btn-default" %>
+            <% elsif evaluation.bad? %>
+              <i class='glyphicon glyphicon-thumbs-down color-red'></i>
+              <%= link_to 'bad取り消し', cancel_answer_path(answer), method: :patch, class: "btn btn-default"  %>
+            <% end %>
+
+            <div class="answer-edit">
+              <p><%= answer.user.name%>さんの回答</p>
+              <%= link_to '編集', edit_answer_path(answer), class: "btn btn-info" %>
+              <%= link_to '削除', answer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
     </div>
-
-    <div class="field">
-      <%= f.label :user_id %>
-      <%= f.hidden_field :user_id%>
-    </div>
-
-    <div class="field">
-      <%= f.label :question_id %>
-      <%= f.hidden_field :question_id%>
-    </div>
-
-    <div class="actions">
-      <%= f.submit %>
-    </div>
-  <% end %>
-<% end %>
-
-<% @answers.each do |answer| %>
-  <p><%= answer.user.name %>さんの回答</p>
-  <%= answer.body %>
-
-
-  <% if user_signed_in? %>
-    <br />
-
-    <% evaluation = Evaluation.find_by(user_id: current_user.id, answer_id: answer.id) %>
-    <% if evaluation.blank? %>
-      <%= link_to 'Good', good_answer_path(answer), method: :patch %>
-      <%= link_to 'bad', bad_answer_path(answer), method: :patch %>
-    <% elsif evaluation.good? %>
-      <%= link_to 'Good取り消し', cancel_answer_path(answer), method: :patch %>
-    <% elsif evaluation.bad? %>
-      <%= link_to 'bad取り消し', cancel_answer_path(answer), method: :patch %>
-    <% end %>
-
-    <% if answer.user.id == current_user&.id %>
-      <br >
-      <%= link_to 'Edit', edit_answer_path(answer) %>
-      <%= link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } %>
-    <% end %>
-
-  <% end %>
-<% end %>
+  </div>
+</div>

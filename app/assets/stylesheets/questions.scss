@@ -12,3 +12,36 @@
 .question {
   border-bottom: 1px solid #ccc;
 }
+
+.question-title {
+  border-bottom: 1px solid #ccc;
+}
+
+.question-edit {
+  text-align: right;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.question-action {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.answer {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.answer-edit {
+  text-align: right;
+}
+
+.color-blue {
+  color: DodgerBlue;
+}
+.color-red {
+color: red;
+}

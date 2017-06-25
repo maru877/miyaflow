@@ -13,3 +13,43 @@
  *= require_tree .
  *= require_self
  */
+
+ .sing-up-title {
+  text-align: center;
+ }
+
+.sing-up {
+  text-align: center;
+  border: 1px solid #c0c0c0;
+  padding: 20px;
+}
+
+.login-title {
+ text-align: center;
+}
+
+.login {
+ text-align: center;
+ border: 1px solid #c0c0c0;
+ padding: 20px;
+}
+
+.password-title {
+ text-align: center;
+}
+
+.password {
+ text-align: center;
+ border: 1px solid #c0c0c0;
+ padding: 50px;
+}
+
+.user_info-title {
+  text-align: center;
+}
+
+.user-info {
+ text-align: center;
+ border: 1px solid #c0c0c0;
+ padding: 50px;
+}
