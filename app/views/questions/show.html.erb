@@ -87,6 +87,11 @@
                 <%= link_to '削除', answer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
               <% end %>
             </div>
+            <br />
+            <div class="answer-edit">
+              <%= link_to 'goodしたユーザー一覧', good_users_answer_path(answer), class: "btn btn-default" %>
+              <%= link_to 'badしたユーザー一覧', bad_users_answer_path(answer), class: "btn btn-default" %>
+            </div>
           <% end %>
         </div>
       <% end %>

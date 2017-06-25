@@ -50,6 +50,14 @@ class AnswersController < ApplicationController
     redirect_to question_path(@answer.question), notice: '回答を削除しました。'
   end
 
+  def good
+    @evaluations = Evaluation.where(answer_id: params[:id], rating: "good")
+  end
+
+  def bad
+    @evaluations = Evaluation.where(answer_id: params[:id], rating: "bad")
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_answer

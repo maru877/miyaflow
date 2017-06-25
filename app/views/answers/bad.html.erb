@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="question-title">
+        <h2>Badしたユーザー一覧</h2><br />
+      </div>
+      <% @evaluations.each do |eva| %>
+        <div class = "user_img" >
+          <%= link_to users_path(eva.user) do %>
+            <%= profile_img(eva.user) %><br />
+          <% end %>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4><%= eva.user.name %></h4>
+            <%= eva.user.self_info %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

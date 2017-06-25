@@ -37,6 +37,7 @@ gem 'devise'
 
 # Uploader
 gem 'carrierwave'
+gem 'mini_magick'
 
 # dotenv
 gem 'dotenv-rails'

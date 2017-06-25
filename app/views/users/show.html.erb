@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+
+      <div class = "user_img" >
+        <%= profile_img(@user) %><br />
+      </div>
+      <br />
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4><%= @user.name %></h4>
+          <%= @user.self_info %>
+        </div>
+      </div>
+
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">投稿した質問</a></li>
+        <li><a href="#tab2" data-toggle="tab">回答した質問</a></li>
+      </ul>
+
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="tab1">
+          <% @questions.each do |question| %>
+            <div class="question">
+              <%= link_to question_path(question) do %>
+                <h4><%= question.title %></h4>
+              <% end %>
+              <% if question.is_resolution? %>
+                <span class="label label-success">解決</span>
+              <% else %>
+                <span class="label label-warning">未解決</span>
+              <% end %>
+              更新日: <%= l question.updated_at, format: :short %><br />
+              <br />
+            </div>
+          <% end %>
+          <%= paginate @questions %>
+        </div>
+
+        <div class="tab-pane fade" id="tab2">
+          <% @answers.each do |answer| %>
+            <div class="answer">
+              <%= link_to question_path(answer.question) do %>
+                <h4><%= answer.question.title %></h4>
+              <% end %>
+              <% if answer.question.is_resolution? %>
+                <span class="label label-success">解決</span>
+              <% else %>
+                <span class="label label-warning">未解決</span>
+              <% end %>
+              更新日: <%= l answer.question.updated_at, format: :short %><br />
+              <br />
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <p>回答内容：</p>
+                  <%= answer.body %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <%= paginate @answers %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
