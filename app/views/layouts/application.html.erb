@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarEexample7">
             <ul class="nav navbar-nav navbar-right">
               <% if user_signed_in? %>
-                <li><%= link_to '質問する', new_question_path %></li>
+                <li><%= link_to '質問する', new_question_path, class: "btn btn-default sm" %></li>
                 <li><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
                 <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
               <% else %>

@@ -3,6 +3,7 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="question-title">
+        <%= link_to resolution_text(@question), resolution_question_path(@question), method: :patch, class: "btn btn-default" %>
         <h2>
           <%= @question.title %>
         </h2>
@@ -30,7 +31,6 @@
         <% if current_user&.id == @question.user.id %>
           <%= link_to '編集', edit_question_path(@question), class: "btn btn-info" %>
           <%= link_to '削除', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-          <%= link_to resolution_text(@question), resolution_question_path(@question), method: :patch, class: "btn btn-default" %>
         <% end %>
       </div>
 
@@ -89,8 +89,12 @@
             </div>
             <br />
             <div class="answer-edit">
-              <%= link_to 'goodしたユーザー一覧', good_users_answer_path(answer), class: "btn btn-default" %>
-              <%= link_to 'badしたユーザー一覧', bad_users_answer_path(answer), class: "btn btn-default" %>
+              <% if answer.evaluations.exists?(rating: "good") %>
+                <%= link_to 'goodしたユーザー一覧', good_users_answer_path(answer), class: "btn btn-default" %>
+              <% end %>
+              <% if answer.evaluations.exists?(rating: "bad") %>
+                <%= link_to 'badしたユーザー一覧', bad_users_answer_path(answer), class: "btn btn-default" %>
+              <% end %>
             </div>
           <% end %>
         </div>
