@@ -1,4 +1,10 @@
-<p class = "flash"><%= notice %><%= alert %></p>
+<% flash.each do |key, value| %>
+  <div class="alert alert-<%= key %>">
+    <div class="container">
+      <%= value %>
+    </div>
+  </div>
+<% end %>
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">

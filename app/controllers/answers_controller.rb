@@ -29,7 +29,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'この質問に回答しました。'
     else
-      render :new
+      redirect_to @question, alert: '回答に失敗しました。'
     end
   end
 

@@ -1,4 +1,10 @@
-<p class = "flash"><%= notice %><%= alert %></p>
+<% flash.each do |key, value| %>
+  <div class="alert alert-<%= key %>">
+    <div class="container">
+      <%= value %>
+    </div>
+  </div>
+<% end %>
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -34,8 +40,47 @@
         <% end %>
       </div>
 
-      <% if user_signed_in? %>
+      <% @answers.each do |answer| %>
+        <div class="answer">
+          <p><%= answer.body %></p>
+          <% if user_signed_in? %>
+            <% evaluation = Evaluation.find_by(user_id: current_user.id, answer_id: answer.id) %>
+            <% if evaluation.blank? %>
+              <%= link_to '', good_answer_path(answer), method: :patch, class: 'glyphicon glyphicon-thumbs-up color-blue' %>
+              <%= link_to '', bad_answer_path(answer), method: :patch, class: 'glyphicon glyphicon-thumbs-down color-red' %>
+            <% elsif evaluation.good? %>
+              <i class='glyphicon glyphicon-thumbs-up color-blue'></i>
+              <%= link_to 'Good取り消し', cancel_answer_path(answer), method: :patch, class: "btn btn-default" %>
+            <% elsif evaluation.bad? %>
+              <i class='glyphicon glyphicon-thumbs-down color-red'></i>
+              <%= link_to 'bad取り消し', cancel_answer_path(answer), method: :patch, class: "btn btn-default"  %>
+            <% end %>
 
+            <div class="answer-edit">
+              <p>
+                回答者: <%= answer.user.name%>さん
+                回答日: <%= l answer.created_at, format: :short %>
+                更新日: <%= l answer.updated_at, format: :short %>
+              </p>
+              <% if current_user.id == answer.user_id %>
+                <%= link_to '編集', edit_answer_path(answer), class: "btn btn-info" %>
+                <%= link_to '削除', answer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+              <% end %>
+            </div>
+            <br />
+            <div class="answer-edit">
+              <% if answer.evaluations.exists?(rating: "good") %>
+                <%= link_to 'goodしたユーザー一覧', good_users_answer_path(answer), class: "btn btn-default" %>
+              <% end %>
+              <% if answer.evaluations.exists?(rating: "bad") %>
+                <%= link_to 'badしたユーザー一覧', bad_users_answer_path(answer), class: "btn btn-default" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if user_signed_in? %>
         <br />
         <h2>回答</h2>
 
@@ -62,42 +107,6 @@
             <%= f.submit '回答する', class: "btn btn-default" %>
           </div>
         <% end %>
-      <% end %>
-
-      <% @answers.each do |answer| %>
-        <div class="answer">
-          <p><%= answer.body %></p>
-          <% if user_signed_in? %>
-            <% evaluation = Evaluation.find_by(user_id: current_user.id, answer_id: answer.id) %>
-            <% if evaluation.blank? %>
-              <%= link_to '', good_answer_path(answer), method: :patch, class: 'glyphicon glyphicon-thumbs-up color-blue' %>
-              <%= link_to '', bad_answer_path(answer), method: :patch, class: 'glyphicon glyphicon-thumbs-down color-red' %>
-            <% elsif evaluation.good? %>
-              <i class='glyphicon glyphicon-thumbs-up color-blue'></i>
-              <%= link_to 'Good取り消し', cancel_answer_path(answer), method: :patch, class: "btn btn-default" %>
-            <% elsif evaluation.bad? %>
-              <i class='glyphicon glyphicon-thumbs-down color-red'></i>
-              <%= link_to 'bad取り消し', cancel_answer_path(answer), method: :patch, class: "btn btn-default"  %>
-            <% end %>
-
-            <div class="answer-edit">
-              <p><%= answer.user.name%>さんの回答</p>
-              <% if current_user.id == answer.user_id %>
-                <%= link_to '編集', edit_answer_path(answer), class: "btn btn-info" %>
-                <%= link_to '削除', answer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-              <% end %>
-            </div>
-            <br />
-            <div class="answer-edit">
-              <% if answer.evaluations.exists?(rating: "good") %>
-                <%= link_to 'goodしたユーザー一覧', good_users_answer_path(answer), class: "btn btn-default" %>
-              <% end %>
-              <% if answer.evaluations.exists?(rating: "bad") %>
-                <%= link_to 'badしたユーザー一覧', bad_users_answer_path(answer), class: "btn btn-default" %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
       <% end %>
 
     </div>

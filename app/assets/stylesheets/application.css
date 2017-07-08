@@ -53,3 +53,14 @@
  border: 1px solid #c0c0c0;
  padding: 50px;
 }
+
+.alert-notice {
+  text-align: center;
+  color: #3c763d;
+  background-color: #dff0d8;
+}
+.alert-alert {
+  text-align: center;
+  background-color: #f2dede;
+  color: #a94442;
+}
