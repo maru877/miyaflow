@@ -45,6 +45,10 @@ gem 'dotenv-rails'
 # pagenate
 gem 'kaminari'
 
+# Admin
+gem 'rails_admin'
+gem 'cancan'
+
 group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
