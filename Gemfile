@@ -49,6 +49,8 @@ gem 'kaminari'
 gem 'rails_admin'
 gem 'cancan'
 
+gem 'active_decorator'
+
 group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
