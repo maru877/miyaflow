@@ -17,6 +17,13 @@
 
       <p>
         <div class="question-content">
+        <% @question.taggings.each do |tagging| %>
+          <span class="label label-primary"><%= tagging.tag.title %></span>
+        <% end %>
+      </p>
+
+      <p>
+        <div class="question-content">
         <%= @question.content %>
       </p>
 
@@ -112,3 +119,16 @@
     </div>
   </div>
 </div>
+
+<% if @recommended_questions.present? %>
+  <div class="container-fluid">
+    <div class="recommended">
+      <h4>こちらもおすすめです</h4>
+      <ul>
+        <% @recommended_questions.each do |question| %>
+          <li><%=  link_to question.title, question_path(question) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

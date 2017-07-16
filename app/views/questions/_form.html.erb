@@ -14,6 +14,13 @@
   </div>
 
   <div class="field">
+    <% @tags.each do |tag| %>
+      <%= check_box_tag 'tag[id][]',tag.id %>
+      <%= label_tag tag.title %>
+    <% end %>
+  </div>
+
+  <div class="field">
     <%= f.text_area :content, size: "90x7", class: "form-control", placeholder: '内容' %><br />
   </div>
 

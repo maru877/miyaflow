@@ -8,12 +8,42 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
+
+      <% if user_signed_in? %>
+        <h1>おすすめの質問</h1><br />
+        <% @recommended_questions.each do |question| %>
+          <div class="question">
+            <%= link_to question_path(question) do %>
+              <h4><%= question.title %></h4>
+            <% end %>
+            <p>
+              <% question.taggings.each do |tagging| %>
+                <span class="label label-primary"><%= tagging.tag.title %></span>
+              <% end %>
+            </p>
+            <% if question.is_resolution? %>
+              <span class="label label-success">解決</span>
+            <% else %>
+              <span class="label label-warning">未解決</span>
+            <% end %>
+            投稿者: <%= link_to "#{question.user.name}", users_path(question.user) %> さん
+            更新日: <%= l question.updated_at, format: :short %><br />
+            <br />
+          </div>
+        <% end %>
+      <% end %>
+
       <h1>最新の質問</h1><br />
       <% @questions.each do |question| %>
         <div class="question">
           <%= link_to question_path(question) do %>
             <h4><%= question.title %></h4>
           <% end %>
+          <p>
+            <% question.taggings.each do |tagging| %>
+              <span class="label label-primary"><%= tagging.tag.title %></span>
+            <% end %>
+          </p>
           <% if question.is_resolution? %>
             <span class="label label-success">解決</span>
           <% else %>

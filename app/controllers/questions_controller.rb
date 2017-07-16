@@ -5,11 +5,16 @@ class QuestionsController < ApplicationController
   # GET /questions.json
   def index
     @questions = Question.all.order(updated_at: :desc).page(params[:page]).per(20)
+    if user_signed_in?
+      tag_id = Tag.often_use_tag(current_user)
+      @recommended_questions = Question.top_3_recommended(tag_id)
+    end
   end
 
   # GET /questions/1
   # GET /questions/1.json
   def show
+    @recommended_questions = Question.top_3_recommended(@question.taggings.first.tag_id) if @question.taggings.present?
     if user_signed_in?
       @answer = @question.answers.build(user_id: current_user.id)
     end
@@ -19,10 +24,12 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
+    @tags = Tag.all
   end
 
   # GET /questions/1/edit
   def edit
+    @tags = Tag.all
   end
 
   # POST /questions
@@ -30,16 +37,9 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     @question.user_id = current_user.id
-
-    respond_to do |format|
-      if @question.save
-        format.html { redirect_to @question, notice: '質問を投稿しました。' }
-        format.json { render :show, status: :created, location: @question }
-      else
-        format.html { render :new }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
-      end
-    end
+    @question.save
+    @question.taggings.create(params[:tag][:id].map{ |t| {tag_id: t} } )
+    redirect_to @question, notice: '質問を投稿しました。'
   end
 
   # PATCH/PUT /questions/1
